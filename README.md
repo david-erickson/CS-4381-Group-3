@@ -12,4 +12,4 @@ Team Members:
 daniel
 Patrick
 David
-Christina
+Christina Burbach
