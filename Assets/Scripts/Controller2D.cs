@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class Controller2D : RaycastController {
 
@@ -7,12 +8,14 @@ public class Controller2D : RaycastController {
 
 	public CollisionInfo collisions;
 	[HideInInspector]
+	public GameObject Respawn;
+	[HideInInspector]
 	public Vector2 playerInput;
 
 	public override void Start() {
 		base.Start ();
 		collisions.faceDir = 1;
-
+		Respawn = GameObject.Find("Respawn");
 	}
 
 	public void Move(Vector2 moveAmount, bool standingOnPlatform) {
@@ -65,6 +68,12 @@ public class Controller2D : RaycastController {
 
 				if (hit.distance == 0) {
 					continue;
+				}
+				if (hit.collider.tag == "Respawn") {
+					transform.position = Respawn.transform.position;
+				}
+				if (hit.collider.tag == "Finish") {
+					SceneManager.LoadScene("scene2");
 				}
 
 				float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
@@ -123,6 +132,12 @@ public class Controller2D : RaycastController {
 						Invoke("ResetFallingThroughPlatform",.5f);
 						continue;
 					}
+				}
+				if (hit.collider.tag == "Respawn") {
+					transform.position = Respawn.transform.position;
+				}
+				if (hit.collider.tag == "Finish") {
+					transform.position = Respawn.transform.position;
 				}
 
 				moveAmount.y = (hit.distance - skinWidth) * directionY;
